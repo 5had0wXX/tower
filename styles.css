@@ -1,0 +1,63 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #1a1a1a;
+    color: white;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 2.5em;
+    color: #ff4b5c;
+}
+
+header p {
+    font-size: 1.2em;
+}
+
+/* Map Container */
+#map {
+    height: 500px;
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 20px;
+    filter: blur(0px);
+}
+
+/* Footer */
+footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 1.1em;
+    color: #ccc;
+}
+
+footer a {
+    color: #ff4b5c;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Adding Cyberpunk Feel (Blurred Background) */
+body {
+    background-image: url('https://images.unsplash.com/photo-1506765514162-dfa6d30763ad'); /* You can replace this with your own image */
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(10px);
+    background-blur: 10px;
+}
