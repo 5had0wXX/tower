@@ -3,22 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tower Map</title>
+    <title>Tower Map | Cyberpunk Style</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Tower Map of CT, MA, RI, NY</h1>
-        <p>Explore the tallest communication towers across Connecticut, Massachusetts, Rhode Island, and New York.</p>
-    </header>
+    <!-- Entry Page -->
+    <div class="entry-page">
+        <h1>Welcome to the Tower Map</h1>
+        <p>Explore the tallest towers with a cyberpunk grid.</p>
+        <button id="enter-btn">Enter</button>
+    </div>
 
-    <div id="map"></div>
+    <!-- Hidden map container that will show once "Enter" is clicked -->
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
 
-    <footer>
-        <p>Made with ❤️. Check out my <a href="https://discord.gg/BJCyeDF47A" target="_blank">Discord</a>!</p>
-    </footer>
+    <audio id="bg-audio" loop>
+        <source src="background-music.mp3" type="audio/mp3">
+    </audio>
 
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_API_KEY&callback=initMap&v=weekly" async></script>
     <script src="scripts.js"></script>
 </body>
 </html>
