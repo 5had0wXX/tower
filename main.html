@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive 3D Tower Map</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #map {
+            height: 80vh;
+            width: 100%;
+        }
+
+        #filterBtn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Interactive 3D Tower Map</h1>
+        <button id="filterBtn">Filter Towers</button>
+    </header>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-3d/0.1.0/leaflet-3d.js"></script>
+    
+    <script>
+        // Initialize map with Leaflet
+        var map = L.map('map').setView([41.7, -73.5], 10);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Define towers with lat, lon, and height (real data from your list)
+        const towers = [
+            { lat: 41.3000, lon: -73.1500, height: 365, name: "Bald Hill, Bethany" },
+            { lat: 41.1833, lon: -73.1894, height: 500, name: "Chopsey Hill, Bridgeport" },
+            { lat: 41.6825, lon: -72.4017, height: 320, name: "Cornwall CT" },
+            { lat: 41.7024, lon: -73.1239, height: 350, name: "Danielson, CT" },
+            { lat: 41.5156, lon: -73.2070, height: 200, name: "Meriden, CT" },
+            { lat: 41.7694, lon: -72.6269, height: 400, name: "New Haven, CT" },
+            { lat: 41.5041, lon: -73.0024, height: 420, name: "Norfolk, CT" },
+            { lat: 41.7457, lon: -72.6731, height: 370, name: "Portland, CT" },
+            { lat: 41.3858, lon: -73.0496, height: 360, name: "Waterbury, CT" },
+            { lat: 41.7102, lon: -72.6113, height: 300, name: "Willimantic, CT" },
+            { lat: 41.4005, lon: -73.1499, height: 420, name: "Windsor Locks, CT" },
+            { lat: 41.5132, lon: -73.1292, height: 310, name: "Bridgeport" },
+            { lat: 41.6829, lon: -72.8258, height: 315, name: "Montville, CT Tower 2" },
+            { lat: 41.7637, lon: -73.1135, height: 500, name: "Greenhill, Hartford" },
+            { lat: 41.5222, lon: -73.0450, height: 470, name: "Shelton, CT" },
+            { lat: 41.2765, lon: -73.1186, height: 380, name: "Derby, CT" },
+            { lat: 41.7474, lon: -73.4729, height: 410, name: "New Fairfield" },
+            // Add more towers here as necessary
+        ];
+
+        // Add towers as 3D markers
+        towers.forEach(function(tower) {
+            var marker = L.marker([tower.lat, tower.lon])
+                .bindPopup("<b>" + tower.name + "</b><br>Height: " + tower.height + " ft")
+                .addTo(map);
+
+            // Add 3D tower (using Three.js)
+            var towerHeight = tower.height;
+            var geometry = new THREE.CylinderGeometry(2, 2, towerHeight, 8);
+            var material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+            var mesh = new THREE.Mesh(geometry, material);
+
+            // Position the 3D tower
+            var latLng = map.latLngToLayerPoint([tower.lat, tower.lon]);
+            mesh.position.set(latLng.x, latLng.y, towerHeight / 2);
+            map._renderer.scene.add(mesh);
+        });
+
+        // Filter functionality
+        document.getElementById("filterBtn").addEventListener("click", function() {
+            alert("Filter functionality is under construction!");
+        });
+    </script>
+</body>
+</html>
