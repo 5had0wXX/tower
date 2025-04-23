@@ -1,11 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Get the button and audio elements
     const button = document.getElementById("enter-btn");
     const audio = document.getElementById("bg-audio");
 
-    // Add click event listener to the "Enter" button
+    // Add click event listener to "Enter" button
     button.addEventListener("click", () => {
-        console.log("Enter button clicked"); // Debugging log
+        console.log("Enter button clicked");
 
         // Hide the entry page and show the map container
         const entryPage = document.querySelector(".entry-page");
@@ -32,49 +31,71 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// Initialize the Google Maps 3D globe with grid overlay
 function initMap() {
-    if (typeof google === "undefined") {
-        console.error("Google Maps API failed to load.");
-        return;
-    }
-
-    const mapOptions = {
-        center: { lat: 41.7, lng: -73.5 }, // Set initial map center
-        zoom: 9,
-        mapTypeId: "satellite", // Use satellite view for better 3D effect
-        heading: 45, // 3D tilt angle
-        tilt: 45, // 3D perspective
-    };
-
-    const mapElement = document.getElementById("map");
-    if (!mapElement) {
-        console.error("Map container not found");
-        return;
-    }
-
-    const map = new google.maps.Map(mapElement, mapOptions);
+    // Create a map instance
+    const map = new ol.Map({
+        target: 'map', // Target the map div
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM() // Use OpenStreetMap tiles
+            })
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([-73.5, 41.7]), // Center on CT area
+            zoom: 9
+        })
+    });
 
     // Add tower markers
     const towers = [
-        { lat: 41.4782, lon: -72.6966, height: 365, name: "Durham Tower" },
-        { lat: 41.7881, lon: -71.9495, height: 317, name: "Brooklyn Tower" },
+        { lon: -72.6966, lat: 41.4782, height: 365, name: "Durham Tower" },
+        { lon: -71.9495, lat: 41.7881, height: 317, name: "Brooklyn Tower" },
         // Add more towers here
     ];
 
     towers.forEach(tower => {
-        const marker = new google.maps.Marker({
-            position: { lat: tower.lat, lng: tower.lon },
-            map: map,
-            title: tower.name,
+        const marker = new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.fromLonLat([tower.lon, tower.lat])),
+            name: tower.name,
+            height: tower.height
         });
 
-        const infowindow = new google.maps.InfoWindow({
-            content: `<b>${tower.name}</b><br>Height: ${tower.height} ft`,
+        const vectorSource = new ol.source.Vector({
+            features: [marker]
         });
 
-        marker.addListener("click", () => {
-            infowindow.open(map, marker);
+        const markerLayer = new ol.layer.Vector({
+            source: vectorSource
+        });
+
+        map.addLayer(markerLayer);
+
+        // Add marker interaction
+        const overlay = new ol.Overlay({
+            element: document.createElement('div'),
+            positioning: 'bottom-center',
+            stopEvent: false
+        });
+
+        overlay.getElement().className = 'tooltip';
+        map.addOverlay(overlay);
+
+        // Show popup on hover
+        map.on('pointermove', function (event) {
+            const feature = map.forEachFeatureAtPixel(event.pixel, function (feat) {
+                return feat;
+            });
+
+            if (feature) {
+                const coordinate = event.coordinate;
+                overlay.setPosition(coordinate);
+
+                overlay.getElement().innerHTML = `
+                    <b>${feature.get('name')}</b><br>Height: ${feature.get('height')} ft
+                `;
+            } else {
+                overlay.setPosition(undefined);
+            }
         });
     });
 }
