@@ -5,7 +5,7 @@ document.getElementById('enter-btn').addEventListener('click', function () {
 
 function initMap() {
     const apiKey = "Oj5Nh1YfwCTfaCAYUfI1"; // <--- PLACE YOUR API KEY HERE
-    const mapStyleUrl = `https://api.maptiler.com/maps/outdoor-v2/style.json?key=${Oj5Nh1YfwCTfaCAYUfI1}`;
+    const mapStyleUrl = `https://api.maptiler.com/maps/outdoor-v2/style.json?key=Oj5Nh1YfwCTfaCAYUfI1`;
 
     if (!ol) {
         console.error("OpenLayers library is not loaded.");
