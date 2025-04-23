@@ -1,34 +1,34 @@
-// Ensure DOM and resources are fully loaded
 document.addEventListener("DOMContentLoaded", () => {
+    // Get the button and audio elements
     const button = document.getElementById("enter-btn");
     const audio = document.getElementById("bg-audio");
 
-    // Add click event listener to "Enter" button
+    // Add click event listener to the "Enter" button
     button.addEventListener("click", () => {
+        console.log("Enter button clicked"); // Debugging log
+
         // Hide the entry page and show the map container
-        document.querySelector(".entry-page").style.display = "none";
-        document.getElementById("map-container").style.display = "block";
+        const entryPage = document.querySelector(".entry-page");
+        const mapContainer = document.getElementById("map-container");
+
+        if (entryPage && mapContainer) {
+            entryPage.style.display = "none";
+            mapContainer.style.display = "block";
+        } else {
+            console.error("Entry page or map container not found");
+        }
 
         // Play background music after user interaction
-        if (audio.paused) {
+        if (audio) {
             audio.play().catch((error) => {
                 console.error("Error playing background music:", error);
             });
+        } else {
+            console.error("Background audio element not found");
         }
 
         // Initialize the map
         initMap();
-    });
-
-    // Add hover sound for buttons
-    document.querySelectorAll("button").forEach(button => {
-        button.addEventListener("mouseover", () => {
-            const hoverSound = new Audio("audio/effects/hover-sound.mp3");
-            hoverSound.currentTime = 0; // Reset sound to start
-            hoverSound.play().catch((error) => {
-                console.error("Error playing hover sound:", error);
-            });
-        });
     });
 });
 
@@ -47,7 +47,13 @@ function initMap() {
         tilt: 45, // 3D perspective
     };
 
-    const map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    const mapElement = document.getElementById("map");
+    if (!mapElement) {
+        console.error("Map container not found");
+        return;
+    }
+
+    const map = new google.maps.Map(mapElement, mapOptions);
 
     // Add tower markers
     const towers = [
