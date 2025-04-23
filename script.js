@@ -1,7 +1,9 @@
 // Play background music on load
 window.onload = () => {
     const audio = document.getElementById("bg-audio");
-    audio.play();
+    audio.play().catch((error) => {
+        console.log("Background music autoplay failed. User interaction is required:", error);
+    });
 };
 
 // Handle the "Enter" button click
@@ -9,6 +11,14 @@ document.getElementById("enter-btn").addEventListener("click", () => {
     document.querySelector(".entry-page").style.display = "none";
     document.getElementById("map-container").style.display = "block";
     initMap();
+
+    // Play background music after user interaction
+    const audio = document.getElementById("bg-audio");
+    if (audio.paused) {
+        audio.play().catch((error) => {
+            console.error("Error playing background music:", error);
+        });
+    }
 });
 
 // Initialize the Google Maps 3D globe with grid overlay
@@ -23,15 +33,7 @@ function initMap() {
 
     const map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-    // Adding a grid overlay
-    const gridLayer = new google.maps.visualization.Grid({
-        cellSize: 100, // Customize the grid size
-        gridColor: "#ff4b5c",
-        opacity: 0.3,
-    });
-    gridLayer.setMap(map);
-
-    // Add tower markers (data from above)
+    // Add tower markers
     const towers = [
         { lat: 41.4782, lon: -72.6966, height: 365, name: 'Durham Tower' },
         { lat: 41.7881, lon: -71.9495, height: 317, name: 'Brooklyn Tower' },
@@ -58,7 +60,10 @@ function initMap() {
 // Sound effect on button hover
 document.querySelectorAll('button').forEach(button => {
     button.addEventListener('mouseover', () => {
-        const hoverSound = new Audio('hover-sound.mp3');
-        hoverSound.play();
+        const hoverSound = new Audio('audio/effects/hover-sound.mp3');
+        hoverSound.currentTime = 0; // Reset sound to start
+        hoverSound.play().catch((error) => {
+            console.error("Error playing hover sound:", error);
+        });
     });
 });
