@@ -29,6 +29,17 @@ document.addEventListener("DOMContentLoaded", () => {
         // Initialize the map
         initMap();
     });
+
+    // Add hover sound for buttons
+    document.querySelectorAll("button").forEach(btn => {
+        btn.addEventListener("mouseover", () => {
+            const hoverSound = new Audio("audio/effects/hover-sound.mp3");
+            hoverSound.currentTime = 0; // Reset sound to start
+            hoverSound.play().catch((error) => {
+                console.error("Error playing hover sound:", error);
+            });
+        });
+    });
 });
 
 function initMap() {
@@ -50,8 +61,10 @@ function initMap() {
     const towers = [
         { lon: -72.6966, lat: 41.4782, height: 365, name: "Durham Tower" },
         { lon: -71.9495, lat: 41.7881, height: 317, name: "Brooklyn Tower" },
-        // Add more towers here
+        { lon: -73.0000, lat: 41.5000, height: 400, name: "New Haven Tower" } // Example additional tower
     ];
+
+    const vectorSource = new ol.source.Vector();
 
     towers.forEach(tower => {
         const marker = new ol.Feature({
@@ -60,42 +73,44 @@ function initMap() {
             height: tower.height
         });
 
-        const vectorSource = new ol.source.Vector({
-            features: [marker]
+        vectorSource.addFeature(marker);
+    });
+
+    const markerLayer = new ol.layer.Vector({
+        source: vectorSource,
+        style: new ol.style.Style({
+            image: new ol.style.Icon({
+                src: 'images/marker-icon.png', // Ensure this icon exists
+                scale: 0.05
+            })
+        })
+    });
+
+    map.addLayer(markerLayer);
+
+    // Add interaction for markers (popup)
+    const overlay = new ol.Overlay({
+        element: document.createElement('div'),
+        positioning: 'bottom-center',
+        stopEvent: false
+    });
+
+    overlay.getElement().className = 'tooltip';
+    map.addOverlay(overlay);
+
+    map.on('pointermove', function (event) {
+        const feature = map.forEachFeatureAtPixel(event.pixel, function (feat) {
+            return feat;
         });
 
-        const markerLayer = new ol.layer.Vector({
-            source: vectorSource
-        });
-
-        map.addLayer(markerLayer);
-
-        // Add marker interaction
-        const overlay = new ol.Overlay({
-            element: document.createElement('div'),
-            positioning: 'bottom-center',
-            stopEvent: false
-        });
-
-        overlay.getElement().className = 'tooltip';
-        map.addOverlay(overlay);
-
-        // Show popup on hover
-        map.on('pointermove', function (event) {
-            const feature = map.forEachFeatureAtPixel(event.pixel, function (feat) {
-                return feat;
-            });
-
-            if (feature) {
-                const coordinate = event.coordinate;
-                overlay.setPosition(coordinate);
-
-                overlay.getElement().innerHTML = `
-                    <b>${feature.get('name')}</b><br>Height: ${feature.get('height')} ft
-                `;
-            } else {
-                overlay.setPosition(undefined);
-            }
-        });
+        if (feature) {
+            const coordinate = event.coordinate;
+            overlay.setPosition(coordinate);
+            overlay.getElement().innerHTML = `
+                <b>${feature.get('name')}</b><br>Height: ${feature.get('height')} ft
+            `;
+        } else {
+            overlay.setPosition(undefined);
+        }
     });
 }
