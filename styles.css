@@ -48,14 +48,13 @@ body {
     background-color: #d83f4b;
 }
 
-/* Hide map initially */
+/* Map container styles */
 #map-container {
     display: none;
     height: 100vh;
     width: 100%;
 }
 
-/* OpenLayers Map Styling */
 #map {
     height: 100%;
     width: 100%;
