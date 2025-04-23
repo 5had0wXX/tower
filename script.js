@@ -1,6 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
     const button = document.getElementById("enter-btn");
     const audio = document.getElementById("bg-audio");
+    let userInteracted = false;
+
+    // Mark interaction when the user clicks anywhere on the page
+    document.addEventListener("click", () => {
+        userInteracted = true;
+    });
 
     // Add click event listener to "Enter" button
     button.addEventListener("click", () => {
@@ -30,19 +36,34 @@ document.addEventListener("DOMContentLoaded", () => {
         initMap();
     });
 
-    // Add hover sound for buttons
+    // Play hover sound only if the user has interacted with the page
     document.querySelectorAll("button").forEach(btn => {
         btn.addEventListener("mouseover", () => {
-            const hoverSound = new Audio("audio/effects/hover-sound.mp3");
-            hoverSound.currentTime = 0; // Reset sound to start
-            hoverSound.play().catch((error) => {
-                console.error("Error playing hover sound:", error);
-            });
+            if (userInteracted) {
+                const hoverSound = new Audio("audio/effects/hover-sound.mp3");
+                hoverSound.currentTime = 0; // Reset sound to start
+                hoverSound.play().catch((error) => {
+                    console.error("Error playing hover sound:", error);
+                });
+            }
         });
     });
 });
 
+// Fallback for crypto.randomUUID
+function generateUUID() {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+}
+
 function initMap() {
+    // Ensure OpenLayers is loaded
+    if (typeof ol === "undefined") {
+        console.error("OpenLayers library is not loaded.");
+        return;
+    }
+
     // Create a map instance
     const map = new ol.Map({
         target: 'map', // Target the map div
@@ -61,7 +82,6 @@ function initMap() {
     const towers = [
         { lon: -72.6966, lat: 41.4782, height: 365, name: "Durham Tower" },
         { lon: -71.9495, lat: 41.7881, height: 317, name: "Brooklyn Tower" },
-        { lon: -73.0000, lat: 41.5000, height: 400, name: "New Haven Tower" } // Example additional tower
     ];
 
     const vectorSource = new ol.source.Vector();
@@ -77,40 +97,8 @@ function initMap() {
     });
 
     const markerLayer = new ol.layer.Vector({
-        source: vectorSource,
-        style: new ol.style.Style({
-            image: new ol.style.Icon({
-                src: 'images/marker-icon.png', // Ensure this icon exists
-                scale: 0.05
-            })
-        })
+        source: vectorSource
     });
 
     map.addLayer(markerLayer);
-
-    // Add interaction for markers (popup)
-    const overlay = new ol.Overlay({
-        element: document.createElement('div'),
-        positioning: 'bottom-center',
-        stopEvent: false
-    });
-
-    overlay.getElement().className = 'tooltip';
-    map.addOverlay(overlay);
-
-    map.on('pointermove', function (event) {
-        const feature = map.forEachFeatureAtPixel(event.pixel, function (feat) {
-            return feat;
-        });
-
-        if (feature) {
-            const coordinate = event.coordinate;
-            overlay.setPosition(coordinate);
-            overlay.getElement().innerHTML = `
-                <b>${feature.get('name')}</b><br>Height: ${feature.get('height')} ft
-            `;
-        } else {
-            overlay.setPosition(undefined);
-        }
-    });
 }
