@@ -50,7 +50,7 @@ body {
 
 /* Map container styles */
 #map-container {
-    display: none;
+    display: none; /* Default to hidden */
     height: 100vh;
     width: 100%;
 }
