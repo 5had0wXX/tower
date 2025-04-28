@@ -1,5 +1,15 @@
 document.getElementById('enter-btn').addEventListener('click', function () {
     console.log('Enter button clicked');
+    
+    // Show the map container
+    const mapContainer = document.getElementById('map-container');
+    mapContainer.style.display = 'block'; // Make the map visible
+    
+    // Hide the entry page
+    const entryPage = document.querySelector('.entry-page');
+    entryPage.style.display = 'none'; // Hide the entry page
+
+    // Initialize the map
     initMap();
 });
 
