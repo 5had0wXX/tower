@@ -32,21 +32,57 @@ function initMap() {
             }),
         ],
         view: new ol.View({
-            center: ol.proj.fromLonLat([0, 0]), // Replace with your desired coordinates [longitude, latitude]
-            zoom: 2, // Zoom level
+            center: ol.proj.fromLonLat([-98.35, 39.5]), // Centered in the US
+            zoom: 4, // Zoom level
         }),
     });
 
-    console.log('Map initialized with MapTiler API.');
+    // Add predefined AT&T towers
+    const towers = [
+        { name: "Tower 1", lat: 37.7749, lon: -122.4194, elevation: 150 },
+        { name: "Tower 2", lat: 40.7128, lon: -74.0060, elevation: 200 },
+        { name: "Tower 3", lat: 34.0522, lon: -118.2437, elevation: 180 },
+    ];
+
+    towers.forEach(tower => {
+        const marker = new ol.Overlay({
+            position: ol.proj.fromLonLat([tower.lon, tower.lat]),
+            positioning: 'center-center',
+            element: document.createElement('div'),
+            stopEvent: false,
+        });
+        marker.getElement().innerHTML = `<b>${tower.name}</b><br>Elevation: ${tower.elevation}m`;
+        map.addOverlay(marker);
+    });
 }
 
 // Add functionality for the Site Maintenance button
 document.getElementById('site-maintenance-btn').addEventListener('click', function () {
     const password = prompt("Enter password for Site Maintenance:");
     if (password === 'admin') {
-        alert("Access granted. You can now perform maintenance tasks.");
-        // Redirect to maintenance page or enable maintenance features
-        // window.location.href = 'maintenance.html'; // Uncomment if you have a dedicated page
+        const name = prompt("Enter Tower Name:");
+        const lat = parseFloat(prompt("Enter Latitude:"));
+        const lon = parseFloat(prompt("Enter Longitude:"));
+        const elevation = parseInt(prompt("Enter Elevation (m):"));
+
+        // Validate input
+        if (!name || isNaN(lat) || isNaN(lon) || isNaN(elevation)) {
+            alert("Invalid input! Please try again.");
+            return;
+        }
+
+        // Add the new tower to the map
+        const map = ol.Map.prototype; // Assume map instance is global or accessible
+        const marker = new ol.Overlay({
+            position: ol.proj.fromLonLat([lon, lat]),
+            positioning: 'center-center',
+            element: document.createElement('div'),
+            stopEvent: false,
+        });
+        marker.getElement().innerHTML = `<b>${name}</b><br>Elevation: ${elevation}m`;
+        map.addOverlay(marker);
+
+        alert(`Tower "${name}" added successfully!`);
     } else {
         alert("Incorrect password! Access denied.");
     }
