@@ -14,8 +14,8 @@ document.getElementById('enter-btn').addEventListener('click', function () {
 });
 
 function initMap() {
-    const apiKey = "Oj5Nh1YfwCTfaCAYUfI1"; // <--- PLACE YOUR API KEY HERE
-    const mapStyleUrl = `https://api.maptiler.com/maps/outdoor-v2/style.json?key=Oj5Nh1YfwCTfaCAYUfI1`;
+    const apiKey = "Oj5Nh1YfwCTfaCAYUfI1"; // MapTiler API Key
+    const mapStyleUrl = `https://api.maptiler.com/maps/outdoor-v2/style.json?key=${apiKey}`;
 
     if (!ol) {
         console.error("OpenLayers library is not loaded.");
@@ -33,7 +33,7 @@ function initMap() {
             }),
         ],
         view: new ol.View({
-            center: ol.proj.fromLonLat([-72.5708, 41.6736]), // Centered at John Tom Hill, CT
+            center: ol.proj.fromLonLat([-72.5708, 41.6736]), // Centered at Glastonbury, CT
             zoom: 7, // Zoom level
         }),
     });
@@ -53,6 +53,8 @@ function initMap() {
         { name: "Johnston, RI", lat: 41.8236, lon: -71.5217, description: "Microwave relay site, height unknown" },
     ];
 
+    const markers = []; // Array to store marker positions for auto-centering
+
     towers.forEach(tower => {
         const markerElement = document.createElement('div');
         markerElement.className = 'tower-marker';
@@ -65,6 +67,14 @@ function initMap() {
             stopEvent: false,
         });
 
+        // Add marker to the map
         map.addOverlay(marker);
+
+        // Store marker position for auto-centering
+        markers.push(ol.proj.fromLonLat([tower.lon, tower.lat]));
     });
+
+    // Auto-center the map to fit all markers
+    const extent = ol.extent.boundingExtent(markers);
+    map.getView().fit(extent, { padding: [50, 50, 50, 50] });
 }
