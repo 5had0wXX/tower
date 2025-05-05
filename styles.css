@@ -60,19 +60,28 @@ body {
     width: 100%;
 }
 
+/* Tower Marker Style */
+.tower-marker {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
 /* Site Maintenance Button */
 #site-maintenance-btn {
     position: absolute;
     bottom: 20px;
-    right: 20px;
+    left: 20px;
     width: 40px;
     height: 40px;
     background-color: transparent;
-    background-image: url('icons/maintenance-icon.svg'); /* Icon file */
+    background-image: url('icons/maintenance-icon.svg'); /* Add your icon */
     background-size: cover;
     border: none;
     cursor: pointer;
-    transition: 0.3s;
+    transition: transform 0.3s;
 }
 
 #site-maintenance-btn:hover {
