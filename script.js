@@ -53,34 +53,28 @@ function initMap() {
         { name: "Johnston, RI", lat: 41.8236, lon: -71.5217, description: "Microwave relay site, height unknown" },
     ];
 
-    const markers = []; // Array to store marker positions for auto-centering
-
     towers.forEach(tower => {
-        const markerElement = document.createElement('div');
-        markerElement.className = 'tower-marker';
-        markerElement.title = `${tower.name}\n${tower.description}`;
+        try {
+            const markerElement = document.createElement('div');
+            markerElement.className = 'tower-marker'; // Generic marker styling
+            markerElement.title = `${tower.name}\n${tower.description}`;
 
-        const marker = new ol.Overlay({
-            position: ol.proj.fromLonLat([tower.lon, tower.lat]),
-            positioning: 'center-center',
-            element: markerElement,
-            stopEvent: false,
-        });
+            const marker = new ol.Overlay({
+                position: ol.proj.fromLonLat([tower.lon, tower.lat]),
+                positioning: 'center-center',
+                element: markerElement,
+                stopEvent: false,
+            });
 
-        // Add marker to the map
-        map.addOverlay(marker);
+            // Add marker to the map
+            map.addOverlay(marker);
 
-        // Debugging: Log marker position
-        console.log(`Marker added: ${tower.name} at [${tower.lat}, ${tower.lon}]`);
-
-        // Store marker position for auto-centering
-        markers.push(ol.proj.fromLonLat([tower.lon, tower.lat]));
+            // Debugging: Log marker position
+            console.log(`Marker added: ${tower.name} at [${tower.lat}, ${tower.lon}]`);
+        } catch (error) {
+            console.error(`Failed to add marker for ${tower.name}:`, error);
+        }
     });
 
-    // Auto-center the map to fit all markers
-    const extent = ol.extent.boundingExtent(markers);
-    map.getView().fit(extent, { padding: [50, 50, 50, 50] });
-
-    // Debugging: Check if markers are visible
-    console.log("All markers added to map:", markers);
+    console.log("All markers added to the map.");
 }
