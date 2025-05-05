@@ -22,6 +22,7 @@ function initMap() {
         return;
     }
 
+    // Initialize the map
     const map = new ol.Map({
         target: 'map',
         layers: [
@@ -67,39 +68,3 @@ function initMap() {
         map.addOverlay(marker);
     });
 }
-
-// Add functionality for the Site Maintenance button
-document.getElementById('site-maintenance-btn').addEventListener('click', function () {
-    const password = prompt("Enter password for Site Maintenance:");
-    if (password === 'admin') {
-        const name = prompt("Enter Tower Name:");
-        const lat = parseFloat(prompt("Enter Latitude:"));
-        const lon = parseFloat(prompt("Enter Longitude:"));
-        const description = prompt("Enter Description:");
-
-        // Validate input
-        if (!name || isNaN(lat) || isNaN(lon) || !description) {
-            alert("Invalid input! Please try again.");
-            return;
-        }
-
-        // Add the new tower to the map
-        const markerElement = document.createElement('div');
-        markerElement.className = 'tower-marker';
-        markerElement.title = `${name}\n${description}`;
-
-        const map = ol.Map.prototype; // Assume map instance is global or accessible
-        const marker = new ol.Overlay({
-            position: ol.proj.fromLonLat([lon, lat]),
-            positioning: 'center-center',
-            element: markerElement,
-            stopEvent: false,
-        });
-
-        map.addOverlay(marker);
-
-        alert(`Tower "${name}" added successfully!`);
-    } else {
-        alert("Incorrect password! Access denied.");
-    }
-});
