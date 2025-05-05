@@ -39,3 +39,15 @@ function initMap() {
 
     console.log('Map initialized with MapTiler API.');
 }
+
+// Add functionality for the Site Maintenance button
+document.getElementById('site-maintenance-btn').addEventListener('click', function () {
+    const password = prompt("Enter password for Site Maintenance:");
+    if (password === 'admin') {
+        alert("Access granted. You can now perform maintenance tasks.");
+        // Redirect to maintenance page or enable maintenance features
+        // window.location.href = 'maintenance.html'; // Uncomment if you have a dedicated page
+    } else {
+        alert("Incorrect password! Access denied.");
+    }
+});
