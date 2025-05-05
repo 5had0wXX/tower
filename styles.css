@@ -60,6 +60,25 @@ body {
     width: 100%;
 }
 
+/* Site Maintenance Button */
+#site-maintenance-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#site-maintenance-btn:hover {
+    background-color: #45a049; /* Darker green */
+}
+
 body {
     background-image: url('images/cyberpunk-bg.jpg');
     background-size: cover;
