@@ -70,6 +70,9 @@ function initMap() {
         // Add marker to the map
         map.addOverlay(marker);
 
+        // Debugging: Log marker position
+        console.log(`Marker added: ${tower.name} at [${tower.lat}, ${tower.lon}]`);
+
         // Store marker position for auto-centering
         markers.push(ol.proj.fromLonLat([tower.lon, tower.lat]));
     });
@@ -77,4 +80,7 @@ function initMap() {
     // Auto-center the map to fit all markers
     const extent = ol.extent.boundingExtent(markers);
     map.getView().fit(extent, { padding: [50, 50, 50, 50] });
+
+    // Debugging: Check if markers are visible
+    console.log("All markers added to map:", markers);
 }
