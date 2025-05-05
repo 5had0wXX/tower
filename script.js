@@ -32,26 +32,38 @@ function initMap() {
             }),
         ],
         view: new ol.View({
-            center: ol.proj.fromLonLat([-98.35, 39.5]), // Centered in the US
-            zoom: 4, // Zoom level
+            center: ol.proj.fromLonLat([-72.5708, 41.6736]), // Centered at John Tom Hill, CT
+            zoom: 7, // Zoom level
         }),
     });
 
-    // Add predefined AT&T towers
+    // Add predefined Long Lines towers
     const towers = [
-        { name: "Tower 1", lat: 37.7749, lon: -122.4194, elevation: 150 },
-        { name: "Tower 2", lat: 40.7128, lon: -74.0060, elevation: 200 },
-        { name: "Tower 3", lat: 34.0522, lon: -118.2437, elevation: 180 },
+        { name: "John Tom Hill, Glastonbury, CT", lat: 41.6736, lon: -72.5708, description: "Former AT&T microwave relay site" },
+        { name: "Durham, CT (Chamberlain Hill)", lat: 41.4825, lon: -72.6803, description: "Two towers (~240 ft & ~365 ft), semi-hardened building" },
+        { name: "Blackstone, MA", lat: 42.0417, lon: -71.5417, description: "Former AT&T relay site, steel tower" },
+        { name: "Peru, MA", lat: 42.4375, lon: -73.0375, description: "Microwave relay site, height unknown" },
+        { name: "Bald Hill, Union, CT", lat: 41.9850, lon: -72.1400, description: "Former AT&T relay site, square delay lens antennas" },
+        { name: "Bethany, CT", lat: 41.4214, lon: -72.9964, description: "Former AT&T microwave relay site" },
+        { name: "Montville, CT", lat: 41.4400, lon: -72.1500, description: "Former AT&T relay site" },
+        { name: "Grassy Hill Rd, Old Lyme, CT", lat: 41.3918, lon: -72.2855, description: "Connected to Durham and New London, CT" },
+        { name: "Peekskill, NY", lat: 41.2900, lon: -73.9200, description: "Large steel tower, used for long-distance communication" },
+        { name: "Roslyn Harbor, NY", lat: 40.8167, lon: -73.6400, description: "Built in 1970, approx. 275 ft tall" },
+        { name: "Johnston, RI", lat: 41.8236, lon: -71.5217, description: "Microwave relay site, height unknown" },
     ];
 
     towers.forEach(tower => {
+        const markerElement = document.createElement('div');
+        markerElement.className = 'tower-marker';
+        markerElement.title = `${tower.name}\n${tower.description}`;
+
         const marker = new ol.Overlay({
             position: ol.proj.fromLonLat([tower.lon, tower.lat]),
             positioning: 'center-center',
-            element: document.createElement('div'),
+            element: markerElement,
             stopEvent: false,
         });
-        marker.getElement().innerHTML = `<b>${tower.name}</b><br>Elevation: ${tower.elevation}m`;
+
         map.addOverlay(marker);
     });
 }
@@ -63,23 +75,27 @@ document.getElementById('site-maintenance-btn').addEventListener('click', functi
         const name = prompt("Enter Tower Name:");
         const lat = parseFloat(prompt("Enter Latitude:"));
         const lon = parseFloat(prompt("Enter Longitude:"));
-        const elevation = parseInt(prompt("Enter Elevation (m):"));
+        const description = prompt("Enter Description:");
 
         // Validate input
-        if (!name || isNaN(lat) || isNaN(lon) || isNaN(elevation)) {
+        if (!name || isNaN(lat) || isNaN(lon) || !description) {
             alert("Invalid input! Please try again.");
             return;
         }
 
         // Add the new tower to the map
+        const markerElement = document.createElement('div');
+        markerElement.className = 'tower-marker';
+        markerElement.title = `${name}\n${description}`;
+
         const map = ol.Map.prototype; // Assume map instance is global or accessible
         const marker = new ol.Overlay({
             position: ol.proj.fromLonLat([lon, lat]),
             positioning: 'center-center',
-            element: document.createElement('div'),
+            element: markerElement,
             stopEvent: false,
         });
-        marker.getElement().innerHTML = `<b>${name}</b><br>Elevation: ${elevation}m`;
+
         map.addOverlay(marker);
 
         alert(`Tower "${name}" added successfully!`);
