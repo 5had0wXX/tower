@@ -62,10 +62,11 @@ body {
 
 /* Tower Marker Style */
 .tower-marker {
-    width: 10px;
-    height: 10px;
-    background-color: red;
-    border-radius: 50%;
+    width: 25px;
+    height: 41px;
+    background-image: url('marker-icon.png'); /* Ensure this path is correct */
+    background-size: cover;
+    background-repeat: no-repeat;
     cursor: pointer;
 }
 
