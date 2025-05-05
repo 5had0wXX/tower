@@ -68,6 +68,7 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     cursor: pointer;
+    border: 1px solid white; /* Optional for debugging visibility */
 }
 
 /* Site Maintenance Button */
