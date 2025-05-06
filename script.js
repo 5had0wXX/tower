@@ -1,16 +1,18 @@
 document.getElementById('enter-btn').addEventListener('click', function () {
     console.log('Enter button clicked');
 
-    // Show the map container after 5 seconds
+    // Show the map container
     const mapContainer = document.getElementById('map-container');
-    const entryPage = document.querySelector('.entry-page');
+    mapContainer.style.display = 'block'; // Make the map visible immediately
 
-    setTimeout(() => {
-        mapContainer.style.display = 'block'; // Make the map visible
+    // Hide the entry page
+    const entryPage = document.querySelector('.entry-page');
+    if (entryPage) {
         entryPage.style.display = 'none'; // Hide the entry page
-        initMap(); // Initialize the map
-        console.log('Map displayed after 5 seconds.');
-    }, 5000);
+    }
+
+    // Initialize the map without delay
+    initMap();
 });
 
 function initMap() {
@@ -39,7 +41,7 @@ function initMap() {
             }),
         });
 
-        // Add predefined Long Lines towers
+        // Predefined towers
         const towers = [
             { name: "John Tom Hill, Glastonbury, CT", lat: 41.6736, lon: -72.5708, description: "Former AT&T microwave relay site" },
             { name: "Durham, CT (Chamberlain Hill)", lat: 41.4825, lon: -72.6803, description: "Two towers (~240 ft & ~365 ft), semi-hardened building" },
@@ -54,10 +56,16 @@ function initMap() {
             { name: "Johnston, RI", lat: 41.8236, lon: -71.5217, description: "Microwave relay site, height unknown" },
         ];
 
+        // Add markers for towers
         towers.forEach(tower => {
             try {
                 const markerElement = document.createElement('div');
                 markerElement.className = 'tower-marker';
+                markerElement.style.width = '10px';
+                markerElement.style.height = '10px';
+                markerElement.style.backgroundColor = 'red';
+                markerElement.style.borderRadius = '50%';
+                markerElement.style.cursor = 'pointer';
                 markerElement.title = `${tower.name}\n${tower.description}`;
 
                 const marker = new ol.Overlay({
@@ -67,9 +75,7 @@ function initMap() {
                     stopEvent: false,
                 });
 
-                // Add marker to the map
                 map.addOverlay(marker);
-
                 console.log(`Marker added: ${tower.name} at [${tower.lat}, ${tower.lon}]`);
             } catch (error) {
                 console.error(`Failed to add marker for ${tower.name}:`, error);
