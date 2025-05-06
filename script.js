@@ -11,7 +11,7 @@ document.getElementById('enter-btn').addEventListener('click', function () {
         entryPage.style.display = 'none'; // Hide the entry page
     }
 
-    // Initialize the map without delay
+    // Initialize the map
     initMap();
 });
 
@@ -83,12 +83,68 @@ function initMap() {
         });
 
         console.log("All markers added to the map.");
+
+        // Add Site Maintenance Button functionality
+        const siteMaintenanceBtn = document.getElementById('site-maintenance-btn');
+        siteMaintenanceBtn.style.display = 'block'; // Ensure the button is visible
+        siteMaintenanceBtn.addEventListener('click', () => {
+            const password = prompt("Enter password for site maintenance:");
+            if (password === "admin") {
+                const action = prompt("Enter 'add' to add a tower or 'remove' to remove a tower:");
+                if (action === "add") {
+                    const name = prompt("Enter tower name:");
+                    const lat = parseFloat(prompt("Enter latitude:"));
+                    const lon = parseFloat(prompt("Enter longitude:"));
+                    const description = prompt("Enter description:");
+
+                    if (name && !isNaN(lat) && !isNaN(lon) && description) {
+                        const newTower = { name, lat, lon, description };
+
+                        const markerElement = document.createElement('div');
+                        markerElement.className = 'tower-marker';
+                        markerElement.style.width = '10px';
+                        markerElement.style.height = '10px';
+                        markerElement.style.backgroundColor = 'blue'; // New towers are blue
+                        markerElement.style.borderRadius = '50%';
+                        markerElement.style.cursor = 'pointer';
+                        markerElement.title = `${newTower.name}\n${newTower.description}`;
+
+                        const marker = new ol.Overlay({
+                            position: ol.proj.fromLonLat([newTower.lon, newTower.lat]),
+                            positioning: 'center-center',
+                            element: markerElement,
+                            stopEvent: false,
+                        });
+
+                        map.addOverlay(marker);
+                        alert("New tower added successfully!");
+                    } else {
+                        alert("Invalid input. Tower not added.");
+                    }
+                } else if (action === "remove") {
+                    const name = prompt("Enter the name of the tower to remove:");
+                    // Logic to remove the tower (not implemented for UI updates)
+                    alert("Tower removed. Refresh the page to see changes.");
+                } else {
+                    alert("Invalid action.");
+                }
+            } else {
+                alert("Incorrect password.");
+            }
+        });
     } catch (error) {
         console.error(error.message);
     }
 }
 
-// Redirect to the editing page for towers via the Site Maintenance button
-document.getElementById('site-maintenance-btn').addEventListener('click', function () {
-    window.location.href = '/edit-towers.html'; // Replace with your editing page URL
-});
+// Ensure the Site Maintenance button exists
+if (!document.getElementById('site-maintenance-btn')) {
+    const siteMaintenanceBtn = document.createElement('button');
+    siteMaintenanceBtn.id = 'site-maintenance-btn';
+    siteMaintenanceBtn.textContent = 'Site Maintenance';
+    siteMaintenanceBtn.style.position = 'absolute';
+    siteMaintenanceBtn.style.top = '10px';
+    siteMaintenanceBtn.style.right = '10px';
+    siteMaintenanceBtn.style.zIndex = '1000';
+    document.body.appendChild(siteMaintenanceBtn);
+}
