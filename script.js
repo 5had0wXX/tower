@@ -100,8 +100,15 @@ function ensureMaintenanceButton(map) {
         siteMaintenanceBtn.id = 'site-maintenance-btn';
         siteMaintenanceBtn.textContent = 'Site Maintenance';
         siteMaintenanceBtn.style.position = 'absolute';
-        siteMaintenanceBtn.style.top = '10px';
-        siteMaintenanceBtn.style.right = '10px';
+        siteMaintenanceBtn.style.bottom = '10px'; // Place it at the bottom left
+        siteMaintenanceBtn.style.left = '10px';
+        siteMaintenanceBtn.style.padding = '10px 20px';
+        siteMaintenanceBtn.style.backgroundColor = '#f44336';
+        siteMaintenanceBtn.style.color = '#fff';
+        siteMaintenanceBtn.style.border = 'none';
+        siteMaintenanceBtn.style.cursor = 'pointer';
+        siteMaintenanceBtn.style.fontSize = '16px';
+        siteMaintenanceBtn.style.borderRadius = '5px';
         siteMaintenanceBtn.style.zIndex = '1000';
         document.body.appendChild(siteMaintenanceBtn);
     }
