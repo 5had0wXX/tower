@@ -22,7 +22,7 @@ function initMap() {
         return;
     }
 
-    // Initialize the map
+    // Initialize the map with the correct US center and zoom
     const map = new ol.Map({
         target: 'map',
         layers: [
@@ -33,8 +33,8 @@ function initMap() {
             }),
         ],
         view: new ol.View({
-            center: ol.proj.fromLonLat([-72.5708, 41.6736]), // Centered at Glastonbury, CT
-            zoom: 7, // Zoom level
+            center: ol.proj.fromLonLat([-98.5795, 39.8283]), // Centered at the geographic center of the US
+            zoom: 4, // Adjusted zoom level for the US
         }),
     });
 
