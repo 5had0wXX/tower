@@ -60,11 +60,6 @@ function initMap() {
         towers.forEach(tower => {
             const markerElement = document.createElement('div');
             markerElement.className = 'tower-marker';
-            markerElement.style.width = '10px';
-            markerElement.style.height = '10px';
-            markerElement.style.backgroundColor = 'red';
-            markerElement.style.borderRadius = '50%';
-            markerElement.style.cursor = 'pointer';
             markerElement.title = `${tower.name}\n${tower.description}`;
 
             const marker = new ol.Overlay({
@@ -99,11 +94,6 @@ function ensureMaintenanceButton(map) {
                 if (name && !isNaN(lat) && !isNaN(lon) && description) {
                     const markerElement = document.createElement('div');
                     markerElement.className = 'tower-marker';
-                    markerElement.style.width = '10px';
-                    markerElement.style.height = '10px';
-                    markerElement.style.backgroundColor = 'blue';
-                    markerElement.style.borderRadius = '50%';
-                    markerElement.style.cursor = 'pointer';
                     markerElement.title = `${name}\n${description}`;
 
                     const marker = new ol.Overlay({
