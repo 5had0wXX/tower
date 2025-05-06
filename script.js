@@ -30,7 +30,7 @@ document.getElementById('enter-btn').addEventListener('click', function () {
     setTimeout(() => {
         initMap();
         document.body.removeChild(loadingScreen); // Remove loading screen after map is initialized
-    }, 2000);
+    }, 1500);
 });
 
 function initMap() {
@@ -104,6 +104,7 @@ function initMap() {
 
     // Add functionality for site maintenance button
     const siteMaintenanceBtn = document.getElementById('site-maintenance-btn');
+    siteMaintenanceBtn.style.display = 'block'; // Ensure the button is visible
     siteMaintenanceBtn.addEventListener('click', () => {
         const password = prompt("Enter password for site maintenance:");
         if (password === "admin") {
