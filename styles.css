@@ -1,82 +1,93 @@
-/* General styles */
-body {
+/* General reset */
+* {
     margin: 0;
-    font-family: Arial, sans-serif;
-    overflow: hidden;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* Entry page styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1a1a1a;
+    color: white;
+    background-image: url('images/cyberpunk-bg.jpg'); /* Updated background image */
+    background-size: cover;
+    background-position: center;
+}
+
+/* Entry Page Styles */
 .entry-page {
+    text-align: center;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    height: 100vh;
-    background-color: #333;
-    color: white;
-    text-align: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 .entry-page h1 {
-    font-size: 2.5rem;
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: #ff4b5c;
 }
 
 .entry-page p {
-    font-size: 1.2rem;
-    margin: 10px 0 20px;
+    font-size: 1.5em;
+    color: #ccc;
+    margin-bottom: 40px;
 }
 
-.entry-page button {
-    background-color: #4CAF50;
+#enter-btn {
+    background-color: #ff4b5c;
     color: white;
+    padding: 15px 30px;
+    font-size: 1.2em;
     border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 10px;
+    transition: 0.3s;
 }
 
-.entry-page button:hover {
-    background-color: #45a049;
+#enter-btn:hover {
+    background-color: #d83f4b;
 }
 
 /* Map container styles */
 #map-container {
-    position: relative;
+    display: none; /* Default to hidden */
+    height: 100vh;
+    width: 100%;
 }
 
 #map {
-    z-index: 1; /* Ensure the map is below any overlays */
-    position: relative;
+    height: 100%;
+    width: 100%;
 }
 
+/* Tower Marker Style */
+.tower-marker {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Site Maintenance Button */
 #site-maintenance-btn {
     position: absolute;
-    bottom: 15px;
-    left: 15px;
-    background-color: #f44336;
-    color: white;
-    padding: 10px 20px;
-    font-size: 1rem;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    background-image: url('images/maintenance-icon.svg'); /* Replace with your icon */
+    background-size: cover;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
-    z-index: 1000; /* Ensure the button is always on top */
+    transition: transform 0.3s;
 }
 
 #site-maintenance-btn:hover {
-    background-color: #d32f2f;
-}
-
-/* Marker styles */
-.tower-marker {
-    width: 15px;
-    height: 15px;
-    background-color: red;
-    border-radius: 50%;
-    border: 2px solid white;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    position: absolute;
-    z-index: 1000; /* Ensure markers are on top of the map */
-    cursor: pointer;
+    transform: scale(1.1);
 }
