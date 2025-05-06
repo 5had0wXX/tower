@@ -16,8 +16,8 @@ document.getElementById('enter-btn').addEventListener('click', function () {
 function initMap() {
     // Check if OpenLayers is loaded
     if (typeof ol === 'undefined') {
-        alert("Error: OpenLayers library is missing. Please ensure it is properly included.");
-        return;
+        console.error("OpenLayers library is missing. Please ensure it is properly included.");
+        return; // Silently handle the error
     }
 
     const apiKey = "Oj5Nh1YfwCTfaCAYUfI1"; // MapTiler API Key
