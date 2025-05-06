@@ -1,15 +1,17 @@
 document.getElementById('enter-btn').addEventListener('click', function () {
     console.log('Enter button clicked');
 
-    // Show the map container
+    // Ensure the map container is visible
     const mapContainer = document.getElementById('map-container');
-    mapContainer.style.display = 'block'; // Make the map visible
+    mapContainer.style.display = 'block';
 
     // Hide the entry page
     const entryPage = document.querySelector('.entry-page');
-    entryPage.style.display = 'none'; // Hide the entry page
+    if (entryPage) {
+        entryPage.style.display = 'none';
+    }
 
-    // Show loading screen
+    // Add a loading screen
     const loadingScreen = document.createElement('div');
     loadingScreen.id = 'loading-screen';
     loadingScreen.style.position = 'absolute';
@@ -26,10 +28,10 @@ document.getElementById('enter-btn').addEventListener('click', function () {
     loadingScreen.innerText = 'Loading map...';
     document.body.appendChild(loadingScreen);
 
-    // Initialize the map
+    // Initialize the map after a brief delay
     setTimeout(() => {
         initMap();
-        document.body.removeChild(loadingScreen); // Remove loading screen after map is initialized
+        document.body.removeChild(loadingScreen); // Remove the loading screen when done
     }, 1500);
 });
 
@@ -37,7 +39,7 @@ function initMap() {
     const apiKey = "Oj5Nh1YfwCTfaCAYUfI1"; // MapTiler API Key
     const mapStyleUrl = `https://api.maptiler.com/maps/outdoor-v2/style.json?key=${apiKey}`;
 
-    // Validate if OpenLayers is loaded
+    // Check if OpenLayers is loaded
     if (typeof ol === 'undefined') {
         console.error("OpenLayers library is not loaded.");
         alert("Error: OpenLayers library is missing. Please ensure it is properly included.");
@@ -102,53 +104,4 @@ function initMap() {
     });
 
     console.log("All markers added to the map.");
-
-    // Add functionality for site maintenance button
-    const siteMaintenanceBtn = document.getElementById('site-maintenance-btn');
-    siteMaintenanceBtn.style.display = 'block'; // Ensure the button is visible
-    siteMaintenanceBtn.addEventListener('click', () => {
-        const password = prompt("Enter password for site maintenance:");
-        if (password === "admin") {
-            const action = prompt("Enter 'add' to add a tower or 'remove' to remove a tower:");
-            if (action === "add") {
-                const name = prompt("Enter tower name:");
-                const lat = parseFloat(prompt("Enter latitude:"));
-                const lon = parseFloat(prompt("Enter longitude:"));
-                const description = prompt("Enter description:");
-
-                if (name && !isNaN(lat) && !isNaN(lon) && description) {
-                    const newTower = { name, lat, lon, description };
-
-                    const markerElement = document.createElement('div');
-                    markerElement.className = 'tower-marker';
-                    markerElement.style.width = '10px';
-                    markerElement.style.height = '10px';
-                    markerElement.style.backgroundColor = 'blue'; // New towers are blue
-                    markerElement.style.borderRadius = '50%';
-                    markerElement.style.cursor = 'pointer';
-                    markerElement.title = `${newTower.name}\n${newTower.description}`;
-
-                    const marker = new ol.Overlay({
-                        position: ol.proj.fromLonLat([newTower.lon, newTower.lat]),
-                        positioning: 'center-center',
-                        element: markerElement,
-                        stopEvent: false,
-                    });
-
-                    map.addOverlay(marker);
-                    alert("New tower added successfully!");
-                } else {
-                    alert("Invalid input. Tower not added.");
-                }
-            } else if (action === "remove") {
-                const name = prompt("Enter the name of the tower to remove:");
-                // Logic to remove the tower (not implemented for UI updates)
-                alert("Tower removed. Refresh the page to see changes.");
-            } else {
-                alert("Invalid action.");
-            }
-        } else {
-            alert("Incorrect password.");
-        }
-    });
 }
