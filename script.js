@@ -58,31 +58,24 @@ function initMap() {
 
         // Add markers for towers
         towers.forEach(tower => {
-            try {
-                const markerElement = document.createElement('div');
-                markerElement.className = 'tower-marker';
-                markerElement.style.width = '10px';
-                markerElement.style.height = '10px';
-                markerElement.style.backgroundColor = 'red';
-                markerElement.style.borderRadius = '50%';
-                markerElement.style.cursor = 'pointer';
-                markerElement.title = `${tower.name}\n${tower.description}`;
+            const markerElement = document.createElement('div');
+            markerElement.className = 'tower-marker';
+            markerElement.style.width = '10px';
+            markerElement.style.height = '10px';
+            markerElement.style.backgroundColor = 'red';
+            markerElement.style.borderRadius = '50%';
+            markerElement.style.cursor = 'pointer';
+            markerElement.title = `${tower.name}\n${tower.description}`;
 
-                const marker = new ol.Overlay({
-                    position: ol.proj.fromLonLat([tower.lon, tower.lat]),
-                    positioning: 'center-center',
-                    element: markerElement,
-                    stopEvent: false,
-                });
+            const marker = new ol.Overlay({
+                position: ol.proj.fromLonLat([tower.lon, tower.lat]),
+                positioning: 'center-center',
+                element: markerElement,
+                stopEvent: false,
+            });
 
-                map.addOverlay(marker);
-                console.log(`Marker added: ${tower.name} at [${tower.lat}, ${tower.lon}]`);
-            } catch (error) {
-                console.error(`Failed to add marker for ${tower.name}:`, error);
-            }
+            map.addOverlay(marker);
         });
-
-        console.log("All markers added to the map.");
 
         // Add Site Maintenance Button functionality
         ensureMaintenanceButton(map);
@@ -92,29 +85,7 @@ function initMap() {
 }
 
 function ensureMaintenanceButton(map) {
-    let siteMaintenanceBtn = document.getElementById('site-maintenance-btn');
-
-    // Create the button if it doesn't exist
-    if (!siteMaintenanceBtn) {
-        siteMaintenanceBtn = document.createElement('button');
-        siteMaintenanceBtn.id = 'site-maintenance-btn';
-        siteMaintenanceBtn.textContent = 'Site Maintenance';
-        siteMaintenanceBtn.style.position = 'absolute';
-        siteMaintenanceBtn.style.bottom = '10px'; // Place it at the bottom left
-        siteMaintenanceBtn.style.left = '10px';
-        siteMaintenanceBtn.style.padding = '10px 20px';
-        siteMaintenanceBtn.style.backgroundColor = '#f44336';
-        siteMaintenanceBtn.style.color = '#fff';
-        siteMaintenanceBtn.style.border = 'none';
-        siteMaintenanceBtn.style.cursor = 'pointer';
-        siteMaintenanceBtn.style.fontSize = '16px';
-        siteMaintenanceBtn.style.borderRadius = '5px';
-        siteMaintenanceBtn.style.zIndex = '1000';
-        document.body.appendChild(siteMaintenanceBtn);
-    }
-
-    siteMaintenanceBtn.style.display = 'block'; // Ensure the button is visible
-
+    const siteMaintenanceBtn = document.getElementById('site-maintenance-btn');
     siteMaintenanceBtn.addEventListener('click', () => {
         const password = prompt("Enter password for site maintenance:");
         if (password === "admin") {
@@ -126,19 +97,17 @@ function ensureMaintenanceButton(map) {
                 const description = prompt("Enter description:");
 
                 if (name && !isNaN(lat) && !isNaN(lon) && description) {
-                    const newTower = { name, lat, lon, description };
-
                     const markerElement = document.createElement('div');
                     markerElement.className = 'tower-marker';
                     markerElement.style.width = '10px';
                     markerElement.style.height = '10px';
-                    markerElement.style.backgroundColor = 'blue'; // New towers are blue
+                    markerElement.style.backgroundColor = 'blue';
                     markerElement.style.borderRadius = '50%';
                     markerElement.style.cursor = 'pointer';
-                    markerElement.title = `${newTower.name}\n${newTower.description}`;
+                    markerElement.title = `${name}\n${description}`;
 
                     const marker = new ol.Overlay({
-                        position: ol.proj.fromLonLat([newTower.lon, newTower.lat]),
+                        position: ol.proj.fromLonLat([lon, lat]),
                         positioning: 'center-center',
                         element: markerElement,
                         stopEvent: false,
@@ -150,9 +119,7 @@ function ensureMaintenanceButton(map) {
                     alert("Invalid input. Tower not added.");
                 }
             } else if (action === "remove") {
-                const name = prompt("Enter the name of the tower to remove:");
-                // Logic to remove the tower (not implemented for UI updates)
-                alert("Tower removed. Refresh the page to see changes.");
+                alert("Tower removal functionality is not implemented yet.");
             } else {
                 alert("Invalid action.");
             }
