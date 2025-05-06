@@ -1,46 +1,25 @@
 document.getElementById('enter-btn').addEventListener('click', function () {
     console.log('Enter button clicked');
-
-    // Show the map container
+    
+    // Show the map container after 5 seconds
     const mapContainer = document.getElementById('map-container');
-    mapContainer.style.display = 'block'; // Make the map visible
-
-    // Hide the entry page
     const entryPage = document.querySelector('.entry-page');
-    if (entryPage) {
-        entryPage.style.display = 'none';
-    }
 
-    // Show loading screen
-    const loadingScreen = document.createElement('div');
-    loadingScreen.id = 'loading-screen';
-    loadingScreen.style.position = 'absolute';
-    loadingScreen.style.top = '0';
-    loadingScreen.style.left = '0';
-    loadingScreen.style.width = '100%';
-    loadingScreen.style.height = '100%';
-    loadingScreen.style.background = 'rgba(0, 0, 0, 0.8)';
-    loadingScreen.style.color = 'white';
-    loadingScreen.style.display = 'flex';
-    loadingScreen.style.alignItems = 'center';
-    loadingScreen.style.justifyContent = 'center';
-    loadingScreen.style.zIndex = '100';
-    loadingScreen.innerText = 'Loading map...';
-    document.body.appendChild(loadingScreen);
-
-    // Initialize the map after a brief delay
     setTimeout(() => {
-        if (typeof ol === 'undefined') {
-            alert("Error: OpenLayers library is missing. Please ensure it is properly included.");
-            document.body.removeChild(loadingScreen);
-            return;
-        }
-        initMap();
-        document.body.removeChild(loadingScreen); // Remove the loading screen when done
-    }, 1500);
+        mapContainer.style.display = 'block'; // Make the map visible
+        entryPage.style.display = 'none'; // Hide the entry page
+        initMap(); // Initialize the map
+        console.log('Map displayed after 5 seconds.');
+    }, 5000);
 });
 
 function initMap() {
+    // Check if OpenLayers is loaded
+    if (typeof ol === 'undefined') {
+        alert("Error: OpenLayers library is missing. Please ensure it is properly included.");
+        return;
+    }
+
     const apiKey = "Oj5Nh1YfwCTfaCAYUfI1"; // MapTiler API Key
     const mapStyleUrl = `https://api.maptiler.com/maps/outdoor-v2/style.json?key=${apiKey}`;
 
@@ -55,12 +34,12 @@ function initMap() {
             }),
         ],
         view: new ol.View({
-            center: ol.proj.fromLonLat([-98.5795, 39.8283]), // Geographic center of the US
-            zoom: 3, // Fully zoomed out over the US
+            center: ol.proj.fromLonLat([-72.5708, 41.6736]), // Centered at Glastonbury, CT
+            zoom: 7, // Zoom level
         }),
     });
 
-    // Predefined towers
+    // Add predefined Long Lines towers
     const towers = [
         { name: "John Tom Hill, Glastonbury, CT", lat: 41.6736, lon: -72.5708, description: "Former AT&T microwave relay site" },
         { name: "Durham, CT (Chamberlain Hill)", lat: 41.4825, lon: -72.6803, description: "Two towers (~240 ft & ~365 ft), semi-hardened building" },
@@ -75,16 +54,10 @@ function initMap() {
         { name: "Johnston, RI", lat: 41.8236, lon: -71.5217, description: "Microwave relay site, height unknown" },
     ];
 
-    // Add markers for towers
     towers.forEach(tower => {
         try {
             const markerElement = document.createElement('div');
             markerElement.className = 'tower-marker';
-            markerElement.style.width = '10px';
-            markerElement.style.height = '10px';
-            markerElement.style.backgroundColor = 'red';
-            markerElement.style.borderRadius = '50%';
-            markerElement.style.cursor = 'pointer';
             markerElement.title = `${tower.name}\n${tower.description}`;
 
             const marker = new ol.Overlay({
@@ -94,7 +67,9 @@ function initMap() {
                 stopEvent: false,
             });
 
+            // Add marker to the map
             map.addOverlay(marker);
+
             console.log(`Marker added: ${tower.name} at [${tower.lat}, ${tower.lon}]`);
         } catch (error) {
             console.error(`Failed to add marker for ${tower.name}:`, error);
@@ -103,3 +78,8 @@ function initMap() {
 
     console.log("All markers added to the map.");
 }
+
+// Redirect to the editing page for towers via the Site Maintenance button
+document.getElementById('site-maintenance-btn').addEventListener('click', function () {
+    window.location.href = '/edit-towers.html'; // Replace with your editing page URL
+});
