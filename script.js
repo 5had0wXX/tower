@@ -56,7 +56,7 @@ function initMap() {
     towers.forEach(tower => {
         try {
             const markerElement = document.createElement('div');
-            markerElement.className = 'tower-marker'; // Generic marker styling
+            markerElement.className = 'tower-marker';
             markerElement.title = `${tower.name}\n${tower.description}`;
 
             const marker = new ol.Overlay({
@@ -69,7 +69,6 @@ function initMap() {
             // Add marker to the map
             map.addOverlay(marker);
 
-            // Debugging: Log marker position
             console.log(`Marker added: ${tower.name} at [${tower.lat}, ${tower.lon}]`);
         } catch (error) {
             console.error(`Failed to add marker for ${tower.name}:`, error);
