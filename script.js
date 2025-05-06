@@ -1,9 +1,9 @@
 document.getElementById('enter-btn').addEventListener('click', function () {
     console.log('Enter button clicked');
 
-    // Ensure the map container is visible
+    // Show the map container
     const mapContainer = document.getElementById('map-container');
-    mapContainer.style.display = 'block';
+    mapContainer.style.display = 'block'; // Make the map visible
 
     // Hide the entry page
     const entryPage = document.querySelector('.entry-page');
@@ -11,7 +11,7 @@ document.getElementById('enter-btn').addEventListener('click', function () {
         entryPage.style.display = 'none';
     }
 
-    // Add a loading screen
+    // Show loading screen
     const loadingScreen = document.createElement('div');
     loadingScreen.id = 'loading-screen';
     loadingScreen.style.position = 'absolute';
@@ -30,6 +30,11 @@ document.getElementById('enter-btn').addEventListener('click', function () {
 
     // Initialize the map after a brief delay
     setTimeout(() => {
+        if (typeof ol === 'undefined') {
+            alert("Error: OpenLayers library is missing. Please ensure it is properly included.");
+            document.body.removeChild(loadingScreen);
+            return;
+        }
         initMap();
         document.body.removeChild(loadingScreen); // Remove the loading screen when done
     }, 1500);
@@ -38,13 +43,6 @@ document.getElementById('enter-btn').addEventListener('click', function () {
 function initMap() {
     const apiKey = "Oj5Nh1YfwCTfaCAYUfI1"; // MapTiler API Key
     const mapStyleUrl = `https://api.maptiler.com/maps/outdoor-v2/style.json?key=${apiKey}`;
-
-    // Check if OpenLayers is loaded
-    if (typeof ol === 'undefined') {
-        console.error("OpenLayers library is not loaded.");
-        alert("Error: OpenLayers library is missing. Please ensure it is properly included.");
-        return;
-    }
 
     // Initialize the map
     const map = new ol.Map({
