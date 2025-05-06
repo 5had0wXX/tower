@@ -1,93 +1,63 @@
-/* General reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* General styles */
 body {
+    margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #1a1a1a;
-    color: white;
-    background-image: url('images/cyberpunk-bg.jpg');
-    background-size: cover;
-    background-position: center;
 }
 
-/* Entry Page Styles */
+/* Entry page styles */
 .entry-page {
-    text-align: center;
-    height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    height: 100vh;
+    background-color: #333;
+    color: white;
+    text-align: center;
 }
 
 .entry-page h1 {
-    font-size: 3em;
-    margin-bottom: 20px;
-    color: #ff4b5c;
+    font-size: 2.5rem;
 }
 
 .entry-page p {
-    font-size: 1.5em;
-    color: #ccc;
-    margin-bottom: 40px;
+    font-size: 1.2rem;
+    margin: 10px 0 20px;
 }
 
-#enter-btn {
-    background-color: #ff4b5c;
+.entry-page button {
+    background-color: #4CAF50;
     color: white;
-    padding: 15px 30px;
-    font-size: 1.2em;
     border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
     cursor: pointer;
-    border-radius: 10px;
-    transition: 0.3s;
+    border-radius: 5px;
 }
 
-#enter-btn:hover {
-    background-color: #d83f4b;
+.entry-page button:hover {
+    background-color: #45a049;
 }
 
-/* Map container styles */
+/* Map styles */
 #map-container {
-    display: none; /* Default to hidden */
-    height: 100vh;
-    width: 100%;
+    position: relative;
 }
 
-#map {
-    height: 100%;
-    width: 100%;
-}
-
-/* Tower Marker Style */
-.tower-marker {
-    width: 10px;
-    height: 10px;
-    background-color: red;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-/* Site Maintenance Button */
 #site-maintenance-btn {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
-    width: 50px;
-    height: 50px;
-    background-color: transparent;
-    background-image: url('icons/maintenance-icon.svg'); /* Replace with your icon path */
-    background-size: cover;
+    bottom: 15px;
+    left: 15px;
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
-    transition: transform 0.3s;
+    z-index: 1000;
 }
 
 #site-maintenance-btn:hover {
-    transform: scale(1.1);
+    background-color: #d32f2f;
 }
