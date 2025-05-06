@@ -5,6 +5,7 @@ document.getElementById('enter-btn').addEventListener('click', function () {
     const mapContainer = document.getElementById('map-container');
     const entryPage = document.querySelector('.entry-page');
 
+    // Ensure elements are found before proceeding
     if (mapContainer && entryPage) {
         mapContainer.style.display = 'block'; // Make the map visible
         entryPage.style.display = 'none'; // Hide the entry page
