@@ -101,4 +101,58 @@ function initMap() {
     });
 
     console.log("All markers added to the map.");
+
+    // Add functionality for site maintenance button
+    const siteMaintenanceBtn = document.getElementById('site-maintenance-btn');
+    siteMaintenanceBtn.addEventListener('click', () => {
+        const password = prompt("Enter password for site maintenance:");
+        if (password === "admin") {
+            const action = prompt("Enter 'add' to add a tower or 'remove' to remove a tower:");
+            if (action === "add") {
+                const name = prompt("Enter tower name:");
+                const lat = parseFloat(prompt("Enter latitude:"));
+                const lon = parseFloat(prompt("Enter longitude:"));
+                const description = prompt("Enter description:");
+
+                if (name && !isNaN(lat) && !isNaN(lon) && description) {
+                    const newTower = { name, lat, lon, description };
+                    towers.push(newTower);
+
+                    const markerElement = document.createElement('div');
+                    markerElement.className = 'tower-marker';
+                    markerElement.style.width = '10px';
+                    markerElement.style.height = '10px';
+                    markerElement.style.backgroundColor = 'blue'; // New towers are blue
+                    markerElement.style.borderRadius = '50%';
+                    markerElement.style.cursor = 'pointer';
+                    markerElement.title = `${newTower.name}\n${newTower.description}`;
+
+                    const marker = new ol.Overlay({
+                        position: ol.proj.fromLonLat([newTower.lon, newTower.lat]),
+                        positioning: 'center-center',
+                        element: markerElement,
+                        stopEvent: false,
+                    });
+
+                    map.addOverlay(marker);
+                    alert("New tower added successfully!");
+                } else {
+                    alert("Invalid input. Tower not added.");
+                }
+            } else if (action === "remove") {
+                const name = prompt("Enter the name of the tower to remove:");
+                const index = towers.findIndex(tower => tower.name === name);
+                if (index !== -1) {
+                    towers.splice(index, 1);
+                    alert("Tower removed. Refresh the page to see changes.");
+                } else {
+                    alert("Tower not found.");
+                }
+            } else {
+                alert("Invalid action.");
+            }
+        } else {
+            alert("Incorrect password.");
+        }
+    });
 }
