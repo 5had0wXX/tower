@@ -5,10 +5,13 @@ document.getElementById('enter-btn').addEventListener('click', function () {
     const mapContainer = document.getElementById('map-container');
     const entryPage = document.querySelector('.entry-page');
 
-    mapContainer.style.display = 'block'; // Make the map visible
-    entryPage.style.display = 'none'; // Hide the entry page
-
-    initMap(); // Initialize the map immediately
+    if (mapContainer && entryPage) {
+        mapContainer.style.display = 'block'; // Make the map visible
+        entryPage.style.display = 'none'; // Hide the entry page
+        initMap(); // Initialize the map immediately
+    } else {
+        console.error("Map container or entry page elements not found.");
+    }
 });
 
 function initMap() {
@@ -69,7 +72,7 @@ function initMap() {
     console.log("All markers loaded and displayed on the map.");
 }
 
-// Redirect to the editing page for towers via the Site Maintenance button
+// Ensure the Site Maintenance button redirects correctly
 document.getElementById('site-maintenance-btn').addEventListener('click', function () {
     window.location.href = '/edit-towers.html'; // Replace with your editing page URL
 });
