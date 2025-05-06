@@ -1,3 +1,4 @@
+// Handle "Enter" button click
 document.getElementById('enter-btn').addEventListener('click', function () {
     console.log('Enter button clicked');
 
@@ -5,26 +6,26 @@ document.getElementById('enter-btn').addEventListener('click', function () {
     const mapContainer = document.getElementById('map-container');
     const entryPage = document.querySelector('.entry-page');
 
-    // Ensure elements are found before proceeding
     if (mapContainer && entryPage) {
-        mapContainer.style.display = 'block'; // Make the map visible
+        mapContainer.style.display = 'block'; // Display the map container
         entryPage.style.display = 'none'; // Hide the entry page
         initMap(); // Initialize the map immediately
     } else {
-        console.error("Map container or entry page elements not found.");
+        console.error("Error: Map container or entry page not found.");
     }
 });
 
+// Initialize the map and add static tower markers
 function initMap() {
     if (typeof ol === 'undefined') {
-        console.error("OpenLayers library is missing. Please ensure it is properly included.");
+        console.error("Error: OpenLayers library is missing. Please ensure it is properly included.");
         return;
     }
 
     const apiKey = "Oj5Nh1YfwCTfaCAYUfI1"; // MapTiler API Key
     const mapStyleUrl = `https://api.maptiler.com/maps/outdoor-v2/style.json?key=${apiKey}`;
 
-    // Initialize the map
+    // Create the map
     const map = new ol.Map({
         target: 'map',
         layers: [
@@ -40,7 +41,7 @@ function initMap() {
         }),
     });
 
-    // Static Long Lines towers
+    // Static tower locations
     const towers = [
         { name: "John Tom Hill, Glastonbury, CT", lat: 41.6736, lon: -72.5708, description: "Former AT&T microwave relay site" },
         { name: "Durham, CT (Chamberlain Hill)", lat: 41.4825, lon: -72.6803, description: "Two towers (~240 ft & ~365 ft), semi-hardened building" },
@@ -55,6 +56,7 @@ function initMap() {
         { name: "Johnston, RI", lat: 41.8236, lon: -71.5217, description: "Microwave relay site, height unknown" },
     ];
 
+    // Add markers for each tower
     towers.forEach(tower => {
         const markerElement = document.createElement('div');
         markerElement.className = 'tower-marker';
@@ -73,7 +75,7 @@ function initMap() {
     console.log("All markers loaded and displayed on the map.");
 }
 
-// Ensure the Site Maintenance button redirects correctly
+// Handle Site Maintenance button click
 document.getElementById('site-maintenance-btn').addEventListener('click', function () {
-    window.location.href = '/edit-towers.html'; // Replace with your editing page URL
+    window.location.href = '/edit-towers.html'; // Redirect to the editing page
 });
