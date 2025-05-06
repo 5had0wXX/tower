@@ -9,8 +9,28 @@ document.getElementById('enter-btn').addEventListener('click', function () {
     const entryPage = document.querySelector('.entry-page');
     entryPage.style.display = 'none'; // Hide the entry page
 
+    // Show loading screen
+    const loadingScreen = document.createElement('div');
+    loadingScreen.id = 'loading-screen';
+    loadingScreen.style.position = 'absolute';
+    loadingScreen.style.top = '0';
+    loadingScreen.style.left = '0';
+    loadingScreen.style.width = '100%';
+    loadingScreen.style.height = '100%';
+    loadingScreen.style.background = 'rgba(0, 0, 0, 0.8)';
+    loadingScreen.style.color = 'white';
+    loadingScreen.style.display = 'flex';
+    loadingScreen.style.alignItems = 'center';
+    loadingScreen.style.justifyContent = 'center';
+    loadingScreen.style.zIndex = '100';
+    loadingScreen.innerText = 'Loading map...';
+    document.body.appendChild(loadingScreen);
+
     // Initialize the map
-    initMap();
+    setTimeout(() => {
+        initMap();
+        document.body.removeChild(loadingScreen); // Remove loading screen after map is initialized
+    }, 2000);
 });
 
 function initMap() {
@@ -34,7 +54,7 @@ function initMap() {
         ],
         view: new ol.View({
             center: ol.proj.fromLonLat([-98.5795, 39.8283]), // Centered at the geographic center of the US
-            zoom: 4, // Adjusted zoom level for the US
+            zoom: 3, // Fully zoomed out over the US
         }),
     });
 
@@ -57,6 +77,11 @@ function initMap() {
         try {
             const markerElement = document.createElement('div');
             markerElement.className = 'tower-marker';
+            markerElement.style.width = '10px';
+            markerElement.style.height = '10px';
+            markerElement.style.backgroundColor = 'red';
+            markerElement.style.borderRadius = '50%';
+            markerElement.style.cursor = 'pointer';
             markerElement.title = `${tower.name}\n${tower.description}`;
 
             const marker = new ol.Overlay({
