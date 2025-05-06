@@ -78,10 +78,10 @@ body {
     position: absolute;
     bottom: 20px;
     left: 20px;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     background-color: transparent;
-    background-image: url('icons/maintenance-icon.svg'); /* Add your icon */
+    background-image: url('icons/maintenance-icon.svg'); /* Replace with your icon path */
     background-size: cover;
     border: none;
     cursor: pointer;
@@ -90,16 +90,4 @@ body {
 
 #site-maintenance-btn:hover {
     transform: scale(1.1);
-}
-
-/* Fade-in Animation */
-h1, p, #enter-btn {
-    opacity: 0;
-    animation: fadeIn 1s ease-in-out forwards;
-}
-
-@keyframes fadeIn {
-    100% {
-        opacity: 1;
-    }
 }
